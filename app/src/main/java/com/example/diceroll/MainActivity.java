@@ -1,6 +1,5 @@
 package com.example.diceroll;
 
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -13,16 +12,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.diceroll.db.AppDataBase;
+import com.example.diceroll.db.Game;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AddGameFragment.OnFragmentInteractionListener {
     ListView gameList;
-    ArrayAdapter<Game> gamesAdapter;
+    CustomAdapterList gamesAdapter;
     ArrayList<Game> gamesDataList;
     int removeIndex;
 
@@ -38,10 +38,14 @@ public class MainActivity extends AppCompatActivity implements AddGameFragment.O
         gameList = findViewById(R.id.games_list);
         gameList.setClickable(true);
 
-        gamesDataList = new ArrayList<>();
-        gamesDataList.add(new Game("test",3,6 )); // testing game
+
         gamesAdapter = new CustomAdapterList(this, gamesDataList);
         gameList.setAdapter(gamesAdapter);
+
+        loadGameList();
+
+        //gamesDataList.add(new Game("test",3,6 )); // testing game
+
 
         ActivityResultLauncher<Intent> gameActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -51,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements AddGameFragment.O
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent data = result.getData();
                             Game game = (Game) data.getSerializableExtra("game");
-                            Boolean delete = data.getBooleanExtra("delete",false);
+                            boolean delete = data.getBooleanExtra("delete",false);
                             gamesDataList.remove(removeIndex);
                             if(!delete)gamesDataList.add(removeIndex,game);
                             gamesAdapter.notifyDataSetChanged();
@@ -82,7 +86,17 @@ public class MainActivity extends AppCompatActivity implements AddGameFragment.O
 
     @Override
     public void onOkPressed(Game newGame) {
-        gamesAdapter.add(newGame);
+        AppDataBase db = AppDataBase.getDbInstance(this.getApplicationContext());
+        db.gameDao().insertGame(newGame);
+        gamesDataList.add(newGame);
+        loadGameList();
+    }
+
+    private void loadGameList(){
+        AppDataBase db = AppDataBase.getDbInstance(this.getApplicationContext());
+        gamesDataList = db.gameDao().getAllGames();
+        gamesAdapter.notifyDataSetChanged();
+
     }
 
 }

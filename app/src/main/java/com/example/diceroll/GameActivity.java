@@ -12,6 +12,8 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.diceroll.db.Game;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
