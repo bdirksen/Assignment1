@@ -1,14 +1,25 @@
-package com.example.diceroll;
+package com.example.diceroll.db;
+
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
+@Entity
 public class Game implements Serializable {
-    private String name;
-    private int rolls;
-    private int sides;
-    private ArrayList<Integer> rollList = new ArrayList<>();
-    private int count = 0;
+
+    @PrimaryKey(autoGenerate = true)
+    public int gid;
+    @ColumnInfo(name = "name")
+    public String name;
+    @ColumnInfo(name = "rolls")
+    public int rolls;
+    @ColumnInfo(name = "sides")
+    public int sides;
+    @ColumnInfo(name = "rollList")
+    public ArrayList<Integer> rollList = new ArrayList<>();
 
     public Game(String name, int rolls, int sides){
         this.name = name;
@@ -29,14 +40,6 @@ public class Game implements Serializable {
     public int getSides() {
 
         return sides;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void addToCount() {
-        this.count++;
     }
 
     public ArrayList<Integer> getRollList() {

@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +12,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.example.diceroll.db.Game;
 
 public class AddGameFragment extends DialogFragment {
     private EditText gameName;
@@ -54,19 +55,15 @@ public class AddGameFragment extends DialogFragment {
                         String name = gameName.getText().toString();
                         String rollsString = gameRolls.getText().toString();
                         String sidesString = gameSides.getText().toString();
-                        while(true){
-                            try{
-                                int rolls = Integer.parseInt(rollsString);
-                                int sides = Integer.parseInt(sidesString);
-                                if(rolls < 4 && rolls > 0)
-                                    if(sides < 7 && sides > 0){
-                                        listener.onOkPressed(new Game(name, rolls, sides));
-                                        break;
-                                    }
-                            }catch(Exception e){
-                                break;
-                            }
-                            break;
+                        try{
+                            int rolls = Integer.parseInt(rollsString);
+                            int sides = Integer.parseInt(sidesString);
+                            if(rolls < 4 && rolls > 0)
+                                if(sides < 7 && sides > 0){
+                                    Game game = new Game(name, rolls, sides);
+                                    listener.onOkPressed(game);
+                                }
+                        }catch(Exception e){
                         }
 
 
