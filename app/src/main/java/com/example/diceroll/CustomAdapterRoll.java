@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class CustomAdapterRoll extends ArrayAdapter {
     // custom adapter for the rolls list
-    private ArrayList<Integer> rolls;
-    private Context context;
+    private final ArrayList<Integer> rolls;
+    private final Context context;
 
     public CustomAdapterRoll(@NonNull Context context, ArrayList<Integer> rolls) {
         super(context,0,rolls);

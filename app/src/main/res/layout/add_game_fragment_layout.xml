@@ -32,5 +32,41 @@
         android:inputType="textPersonName"
         android:minHeight="48dp" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Day" />
+
+    <EditText
+        android:id="@+id/game_day_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Day"/>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Month" />
+
+    <EditText
+        android:id="@+id/game_month_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Month"/>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Year" />
+
+    <EditText
+        android:id="@+id/game_year_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Year"/>
+
 
 </LinearLayout>

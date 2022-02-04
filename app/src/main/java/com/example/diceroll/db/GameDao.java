@@ -5,17 +5,19 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import java.util.ArrayList;
+import com.example.diceroll.Game;
+
+import java.util.List;
 
 @Dao
 public interface GameDao {
 
     @Query("SELECT * FROM game")
-    ArrayList<Game> getAllGames();
+    List<Game> getAllGames();
 
     @Insert
-    Void insertGame(Game... games);
+    void insertGame(Game... games);
 
     @Delete
-    void delete(Game game);
+    void deleteGame(Game game);
 }

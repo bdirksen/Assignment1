@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public class CustomAdapterGrid extends ArrayAdapter {
 
-    private ArrayList<String> numbers;
-    private Context context;
+    private final ArrayList<String> numbers;
+    private final Context context;
 
     public CustomAdapterGrid(@NonNull Context context, ArrayList<String> numbers) {
         super(context,0,numbers);

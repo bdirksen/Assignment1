@@ -1,7 +1,5 @@
 package com.example.diceroll;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +8,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.diceroll.db.Game;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
@@ -69,7 +67,7 @@ public class StatsActivity extends AppCompatActivity {
         totalView.setText(" Total: "+ total);
 
         // sets up adapter
-        statsAdapter = new CustomAdapterStatsList(this, statsDataList);
+        statsAdapter = new CustomAdapterStatsList(this, statsDataList, average);
         statsList.setAdapter(statsAdapter);
 
 

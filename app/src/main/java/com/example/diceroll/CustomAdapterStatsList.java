@@ -14,13 +14,15 @@ import java.util.ArrayList;
 
 public class CustomAdapterStatsList extends ArrayAdapter {
 
-    private ArrayList<Stat> stats;
-    private Context context;
+    private final ArrayList<Stat> stats;
+    private final Context context;
+    private final int average;
 
-    public CustomAdapterStatsList(@NonNull Context context, ArrayList<Stat> stats) {
+    public CustomAdapterStatsList(@NonNull Context context, ArrayList<Stat> stats, int average) {
         super(context,0,stats);
         this.stats = stats;
         this.context = context;
+        this.average = average;
 
     }
 
@@ -37,10 +39,12 @@ public class CustomAdapterStatsList extends ArrayAdapter {
         TextView amount = view.findViewById(R.id.rollAmount_textView);
         String rollsOut = stat.getRoll() + " ("+stat.getAmount()+") ";
         rolls.setText(rollsOut);
-        int amountOfHash = Integer.parseInt(stat.getAmount())/5;
-        String amountOut = "| ";
-        for(int i=0; i < amountOfHash;i++) amountOut += "#";
-        amount.setText(amountOut);
+        int divider = (average/5);
+        if(divider == 0) divider = 1;
+        int amountOfHash = Integer.parseInt(stat.getAmount())/divider;
+        StringBuilder amountOut = new StringBuilder("| ");
+        for(int i=0; i < amountOfHash;i++) amountOut.append("#");
+        amount.setText(amountOut.toString());
 
 
 

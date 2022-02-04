@@ -1,34 +1,29 @@
 package com.example.diceroll;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.example.diceroll.db.Game;
-
+import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
-import java.util.Locale;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements EditGameFragment.OnFragmentInteractionListener{
 
     // needed variables
     GridView numberGrid;
-    ArrayAdapter<String> numbersAdapter;
+    CustomAdapterGrid numbersAdapter;
     ArrayList<String> numbersDataList;
     ListView rollList;
-    ArrayAdapter<Integer> rollsAdapter;
+    CustomAdapterRoll rollsAdapter;
     String name;
     int rolls;
     int sides;
-
+    String date;
+    Game game;
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,14 +35,23 @@ public class GameActivity extends AppCompatActivity {
         numbersDataList = new ArrayList<>();
 
         // retrieving selected game class data from the intent and setting variables
-        Game game = (Game) getIntent().getSerializableExtra("game");
+        game = (Game) getIntent().getSerializableExtra("game");
         name = game.getName();
         rolls = game.getRolls();
         sides = game.getSides();
+        date = game.getDate();
 
         // sets the title at top of activity to the name of the game
         TextView nameTextView = findViewById(R.id.textView_gameName);
-        nameTextView.setText(name.toUpperCase(Locale.ROOT));
+        nameTextView.setText(name);
+
+        // lets u edit the game name
+        Button edit = findViewById(R.id.game_edit_button);
+        edit.setOnClickListener(view -> new EditGameFragment(game).show(getSupportFragmentManager(),"ADD_GAME"));
+
+        // sets the date at the top of the activity
+        TextView dateTextView = findViewById(R.id.textView2);
+        dateTextView.setText("Date: "+date);
 
         // adds each different possible roll number to the arraylist
         for(int i = rolls; i < rolls*sides+1; i++){
@@ -59,12 +63,9 @@ public class GameActivity extends AppCompatActivity {
         numberGrid.setAdapter(numbersAdapter);
 
         // handling the selection of the roll
-        numberGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                game.addRollToList(Integer.valueOf(numbersDataList.get(i)));
-                rollsAdapter.notifyDataSetChanged();
-            }
+        numberGrid.setOnItemClickListener((adapterView, view, i, l) -> {
+            game.addRollToList(Integer.parseInt(numbersDataList.get(i)));
+            rollsAdapter.notifyDataSetChanged();
         });
 
         // variables for the rolls display
@@ -75,53 +76,56 @@ public class GameActivity extends AppCompatActivity {
         // delete game button and handling
         Button delete = findViewById(R.id.gameDelete);
 
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(GameActivity.this,MainActivity.class);
-                intent.putExtra("game", game);
-                intent.putExtra("delete",true);
-                setResult(RESULT_OK,intent);
-                finish();
-            }
+        delete.setOnClickListener(view -> {
+            Intent intent = new Intent(GameActivity.this,MainActivity.class);
+            intent.putExtra("game", game);
+            intent.putExtra("delete",true);
+            setResult(RESULT_OK,intent);
+            finish();
         });
 
         // back button and handling
         Button back = findViewById(R.id.back_button);
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(GameActivity.this,MainActivity.class);
-                intent.putExtra("game", game);
-                intent.putExtra("delete",false);
-                setResult(RESULT_OK,intent);
-                finish();
-            }
+        back.setOnClickListener(view -> {
+            Intent intent = new Intent(GameActivity.this,MainActivity.class);
+            intent.putExtra("game", game);
+            intent.putExtra("delete",false);
+            setResult(RESULT_OK,intent);
+            finish();
         });
 
         // undo most recent roll button and handling
         Button undo = findViewById(R.id.undo_button);
 
-        undo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                game.undo();
-                rollsAdapter.notifyDataSetChanged();
-            }
+        undo.setOnClickListener(view -> {
+            game.undo();
+            rollsAdapter.notifyDataSetChanged();
         });
 
         // stats button and handling
         Button stats = findViewById(R.id.stats_button);
 
-        stats.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent statsIntent = new Intent(GameActivity.this,StatsActivity.class);
-                statsIntent.putExtra("game", game);
-                // starts stats activity to display roll data
-                startActivity(statsIntent);
-            }
+        stats.setOnClickListener(view -> {
+            Intent statsIntent = new Intent(GameActivity.this,StatsActivity.class);
+            statsIntent.putExtra("game", game);
+            // starts stats activity to display roll data
+            startActivity(statsIntent);
         });
+
+    }
+    @Override
+    public void onOkPressedEdit(String name,int rolls,int sides,String date,ArrayList<Integer> rollList,int total) {
+        game.setName(name);
+        game.setRolls(rolls);
+        game.setSides(sides);
+        game.setTotalRolls(total);
+        game.setRollList(rollList);
+        game.setDate(date);
+        Intent intent = new Intent(GameActivity.this,MainActivity.class);
+        intent.putExtra("game", game);
+        intent.putExtra("delete",false);
+        setResult(RESULT_OK,intent);
+        finish();
     }
 }

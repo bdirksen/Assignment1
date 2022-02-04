@@ -10,9 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.diceroll.db.Game;
-
 import java.util.ArrayList;
+import java.util.List;
 
 public class CustomAdapterList extends ArrayAdapter {
 
@@ -35,6 +34,8 @@ public class CustomAdapterList extends ArrayAdapter {
         Game game = games.get(position);
         TextView gameName = view.findViewById(R.id.name_text);
         gameName.setText(game.getName());
+        TextView totalRolls = view.findViewById(R.id.total_text);
+        totalRolls.setText(String.valueOf(game.getTotalRolls()));
 
         return view;
     }

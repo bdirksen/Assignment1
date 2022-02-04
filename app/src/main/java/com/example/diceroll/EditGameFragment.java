@@ -12,21 +12,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 
 
-public class AddGameFragment extends DialogFragment {
+public class EditGameFragment extends DialogFragment {
     private EditText gameName;
     private EditText gameRolls;
     private EditText gameSides;
     private EditText gameDay;
     private EditText gameMonth;
     private EditText gameYear;
+    Game game;
     private OnFragmentInteractionListener listener;
-    Calendar calendar = Calendar.getInstance();
+    ArrayList<Integer> rollList;
+    int total;
+
+    public EditGameFragment(Game game) {
+        this.game = game;
+    }
 
     public interface OnFragmentInteractionListener{
-        void onOkPressed(Game newGame);
+        void onOkPressedEdit(String name,int rolls,int sides,String date,ArrayList<Integer> rollList,int total);
     }
 
     @Override
@@ -44,14 +50,21 @@ public class AddGameFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_game_fragment_layout, null);
         gameName = view.findViewById(R.id.game_name_editText);
+        gameName.setText(game.getName());
         gameRolls = view.findViewById(R.id.game_rolls_editText);
+        gameRolls.setText(String.valueOf(game.getRolls()));
         gameSides = view.findViewById(R.id.game_sides_editText);
+        gameSides.setText(String.valueOf(game.getSides()));
         gameDay = view.findViewById(R.id.game_day_editText);
         gameMonth = view.findViewById(R.id.game_month_editText);
         gameYear = view.findViewById(R.id.game_year_editText);
-        gameDay.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-        gameMonth.setText(String.valueOf(calendar.get(Calendar.MONTH)+1));
-        gameYear.setText(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        String[] date = game.getDate().split("-");
+        gameDay.setText(date[2]);
+        gameMonth.setText(date[1]);
+        gameYear.setText(date[0]);
+        rollList = game.getRollList();
+        total = game.getTotalRolls();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
@@ -65,14 +78,14 @@ public class AddGameFragment extends DialogFragment {
                     String day = gameDay.getText().toString();
                     String month = gameMonth.getText().toString();
                     String year = gameYear.getText().toString();
-                    String date = year + "-" + month + "-" + day;
+                    String date1 = year + "-" + month + "-" + day;
 
                     try{
                         int rolls = Integer.parseInt(rollsString);
                         int sides = Integer.parseInt(sidesString);
                         if(rolls < 4 && rolls > 0)
                             if(sides < 7 && sides > 0){
-                                listener.onOkPressed(new Game(name, rolls, sides, date));
+                                listener.onOkPressedEdit(name, rolls, sides, date1, rollList, total);
                             }
                     }catch(Exception ignored){
                     }
