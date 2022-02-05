@@ -12,11 +12,8 @@ import com.example.diceroll.Game;
 @Database(entities = {Game.class}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class AppDataBase extends RoomDatabase {
-
     public abstract GameDao gameDao();
-
     private static AppDataBase INSTANCE;
-
     public static AppDataBase getDbInstance(Context context){
 
         if(INSTANCE == null){

@@ -16,11 +16,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AddGameFragment.OnFragmentInteractionListener {
-    ListView gameList;
-    CustomAdapterList gamesAdapter;
-    ArrayList<Game> gamesDataList;
-    int removeIndex;
-    AppDataBase db;
+    private ListView gameList;
+    private CustomAdapterList gamesAdapter;
+    private ArrayList<Game> gamesDataList;
+    private int removeIndex;
+    private AppDataBase db;
 
 
 

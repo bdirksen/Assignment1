@@ -23,7 +23,7 @@ public class AddGameFragment extends DialogFragment {
     private EditText gameMonth;
     private EditText gameYear;
     private OnFragmentInteractionListener listener;
-    Calendar calendar = Calendar.getInstance();
+    private final Calendar calendar = Calendar.getInstance();
 
     public interface OnFragmentInteractionListener{
         void onOkPressed(Game newGame);

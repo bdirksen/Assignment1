@@ -14,18 +14,9 @@ import java.util.ArrayList;
 
 public class StatsActivity extends AppCompatActivity {
 
-    ListView statsList;
-    ArrayAdapter<Stat> statsAdapter;
-    ArrayList<Stat> statsDataList;
-    Game game;
-    String name;
-    int rolls;
-    int sides;
-    ArrayList<Integer> rollList;
-    int min;
-    int max = 0;
-    int average;
-    int total = 0;
+    private int min;
+    private int max = 0;
+    private int total = 0;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -34,17 +25,17 @@ public class StatsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stats);
 
         // setting variables
-        game = (Game) getIntent().getSerializableExtra("game");
-        name = game.getName();
-        rolls = game.getRolls();
-        sides = game.getSides();
-        rollList = game.getRollList();
-        statsList = findViewById(R.id.stats_ListView);
-        statsDataList = new ArrayList<>();
+        Game game = (Game) getIntent().getSerializableExtra("game");
+        String name = game.getName();
+        int rolls = game.getRolls();
+        int sides = game.getSides();
+        ArrayList<Integer> rollList = game.getRollList();
+        ListView statsList = findViewById(R.id.stats_ListView);
+        ArrayList<Stat> statsDataList = new ArrayList<>();
 
         // makes a item for every unique roll number and finds the amount of those rolls
         if(rollList.size() != 0) min = rollList.get(0);
-        for(int i = rolls; i < rolls*sides+1; i++){
+        for(int i = rolls; i < rolls * sides +1; i++){
             int amount = 0;
             for(int f = 0; f < rollList.size(); f++){
                 if(rollList.get(f) == i) amount++;
@@ -54,7 +45,7 @@ public class StatsActivity extends AppCompatActivity {
             total += amount;
             statsDataList.add(new Stat(String.valueOf(amount), String.valueOf(i)));
         }
-        average = total / (rolls*sides-rolls+1);
+        int average = total / (rolls * sides - rolls + 1);
 
         // sets up stats display
         TextView minView = findViewById(R.id.min_textView);
@@ -67,7 +58,7 @@ public class StatsActivity extends AppCompatActivity {
         totalView.setText(" Total: "+ total);
 
         // sets up adapter
-        statsAdapter = new CustomAdapterStatsList(this, statsDataList, average);
+        ArrayAdapter<Stat> statsAdapter = new CustomAdapterStatsList(this, statsDataList, average);
         statsList.setAdapter(statsAdapter);
 
 

@@ -10,19 +10,20 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
-public class GameActivity extends AppCompatActivity implements EditGameFragment.OnFragmentInteractionListener{
+public class GameActivity extends AppCompatActivity implements EditGameFragment.OnFragmentInteractionListenerEdit {
 
     // needed variables
-    GridView numberGrid;
-    CustomAdapterGrid numbersAdapter;
-    ArrayList<String> numbersDataList;
-    ListView rollList;
-    CustomAdapterRoll rollsAdapter;
-    String name;
-    int rolls;
-    int sides;
-    String date;
-    Game game;
+    private GridView numberGrid;
+    private CustomAdapterGrid numbersAdapter;
+    private ArrayList<String> numbersDataList;
+    private ListView rollList;
+    private CustomAdapterRoll rollsAdapter;
+    private String name;
+    private int rolls;
+    private int sides;
+    private String date;
+    private Game game;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {

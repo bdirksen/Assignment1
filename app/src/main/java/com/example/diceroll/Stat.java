@@ -1,8 +1,8 @@
 package com.example.diceroll;
 
 public class Stat {
-    private String amount;
-    private String roll;
+    private final String amount;
+    private final String roll;
 
     public Stat(String amount, String roll){
         this.amount = amount;
@@ -15,13 +15,5 @@ public class Stat {
 
     public String getRoll() {
         return roll;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public void setRoll(String roll) {
-        this.roll = roll;
     }
 }

@@ -22,24 +22,24 @@ public class EditGameFragment extends DialogFragment {
     private EditText gameDay;
     private EditText gameMonth;
     private EditText gameYear;
-    Game game;
-    private OnFragmentInteractionListener listener;
-    ArrayList<Integer> rollList;
+    private Game game;
+    private OnFragmentInteractionListenerEdit listener;
+    private ArrayList<Integer> rollList;
     int total;
 
     public EditGameFragment(Game game) {
         this.game = game;
     }
 
-    public interface OnFragmentInteractionListener{
+    public interface OnFragmentInteractionListenerEdit {
         void onOkPressedEdit(String name,int rolls,int sides,String date,ArrayList<Integer> rollList,int total);
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener){
-            listener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnFragmentInteractionListenerEdit){
+            listener = (OnFragmentInteractionListenerEdit) context;
         } else {
             throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
